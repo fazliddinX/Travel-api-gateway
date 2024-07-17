@@ -17,4 +17,7 @@ mig-create:
 
 mig-insert:
 	migrate create -ext sql -dir db/migrations -seq travel_content
+
+swag-gen:
+	~/go/bin/swag init -g api/api.go -o api/docs
 #   rm -r db/migrations

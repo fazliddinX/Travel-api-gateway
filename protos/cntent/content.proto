@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "genproto/content-service";
+option go_package = "genproto/content_service";
 
 package protos;
 
@@ -264,7 +264,7 @@ message StoryComments {
 }
 
 message FilterComment {
-  string userName = 1;
+  string storyId = 1;
   int64 limit = 2;
   int64 offset = 3;
 }
