@@ -1,29 +1,63 @@
 package middleware
 
 import (
-	t "Api-Gateway/token"
-	"github.com/gin-gonic/gin"
+	"api-gateway/logs"
+	"api-gateway/token"
+	"fmt"
+	"log/slog"
 	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
-func MiddleWare() gin.HandlerFunc {
+func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		if token == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "token is empty"})
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is required"})
 			c.Abort()
 			return
 		}
-		claims, err := t.ExtractClaimAcces(token)
+
+		valid, err := token.ValidateToken(authHeader)
+		if err != nil || !valid {
+			c.AbortWithStatusJSON(http.StatusBadRequest, fmt.Errorf("invalid token: %s", err))
+			return
+		}
+
+		claims, err := token.ExtractClaimsAccess(authHeader)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			return
+		}
+
+		if claims.ExpiresAt < time.Now().Unix() {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token has expired"})
 			c.Abort()
 			return
 		}
-		c.Set("id", claims.Id)
-		c.Set("name", claims.Name)
-		c.Set("age", claims.Age)
+
+		// Claimsdan ma'lumotlarni kontekstga qo'shish
+		c.Set("user_id", claims.UserId)
+		c.Set("username", claims.Username)
 		c.Set("email", claims.Email)
+
 		c.Next()
+	}
+}
+
+func LoggerMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		logs.Logger.Info("Request received",
+			slog.String("method", c.Request.Method),
+			slog.String("path", c.Request.URL.Path),
+		)
+
+		c.Next()
+
+		logs.Logger.Info("Response sent",
+			slog.Int("status", c.Writer.Status()),
+		)
 	}
 }

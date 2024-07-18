@@ -1,20 +1,31 @@
 package handler
 
 import (
-	"Api-Gateway/genproto/auth_service"
-	"Api-Gateway/genproto/content_service"
-	"google.golang.org/grpc"
+	"api-gateway/generated/communication"
+	"api-gateway/generated/destination"
+	"api-gateway/generated/itineraries"
+	"api-gateway/generated/stories"
+	"api-gateway/generated/user"
+	"api-gateway/service"
 	"log/slog"
 )
 
 type Handler struct {
-	Logger  *slog.Logger
-	User    auth_service.AuthServiceClient
-	Content content_service.ContentClient
+	UserClient        user.AuthServiceClient
+	StoriesClient     stories.TravelStoriesServiceClient
+	ItineraryClient   itineraries.ItinerariesServiceClient
+	CommunityClient   communication.CommunicationServiceClient
+	DestinationClient destination.TravelDestinationServiceClient
+	Logger            *slog.Logger
 }
 
-func NewHandler(user, content *grpc.ClientConn, logger *slog.Logger) *Handler {
-	us := auth_service.NewAuthServiceClient(user)
-	c := content_service.NewContentClient(content)
-	return &Handler{Logger: logger, User: us, Content: c}
+func NewHandler(serviceManager service.IServiceManager, logger *slog.Logger) *Handler {
+	return &Handler{
+		UserClient:        serviceManager.UserService(),
+		StoriesClient:     serviceManager.StoriesService(),
+		ItineraryClient:   serviceManager.ItinerariesService(),
+		CommunityClient:   serviceManager.CommunicationService(),
+		DestinationClient: serviceManager.TravelDestinationService(),
+		Logger:            logger,
+	}
 }

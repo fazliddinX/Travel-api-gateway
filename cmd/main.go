@@ -1,33 +1,31 @@
 package main
 
 import (
-	"Api-Gateway/api"
-	"Api-Gateway/api/handler"
-	"Api-Gateway/logger"
-	"fmt"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"api-gateway/api"
+	"api-gateway/api/handler"
+	"api-gateway/config"
+	"api-gateway/logs"
+	"api-gateway/service"
 	"log"
+	"log/slog"
 )
 
 func main() {
-	logg := logger.InitLogger()
+	cfg := config.Load()
+	logs.InitLogger()
 
-	content, err := grpc.NewClient(":5051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	serviceManager, err := service.NewServiceManager(&cfg)
 	if err != nil {
-		logg.Error("new grpc client error: %v", err)
-		log.Fatalln(err)
+		logs.Logger.Error("gRPC dial error", slog.String("error", err.Error()))
 	}
 
-	user, err := grpc.NewClient(":5052", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	handler := handler.NewHandler(serviceManager, logs.Logger)
+	router := api.NewRouter(handler)
+	logs.Logger.Info("Server is running ... ", slog.String("PORT", cfg.HTTP_PORT))
+
+	err = router.Run(cfg.HTTP_PORT)
 	if err != nil {
-		logg.Error("new grpc client error: %v", err)
-		log.Fatalln(err)
+		logs.Logger.Error("Routerni run qilishda xatolik beryapti", slog.String("error", err.Error()))
+		log.Fatal(err)
 	}
-
-	hnd := handler.NewHandler(user, content, logg)
-	run := api.Router(hnd)
-
-	err = run.Run(":8080")
-	fmt.Println(err)
 }
