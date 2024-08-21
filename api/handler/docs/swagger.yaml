@@ -740,11 +740,10 @@ definitions:
       username:
         type: string
     type: object
-host: localhost:8080
 info:
   contact: {}
-  description: This is a sample server for Auth Service.
-  title: Auth Service API
+  description: Api-geteway for user and story.
+  title: Api Get Eway
   version: "1.0"
 paths:
   /api/v1/destinations:
@@ -911,7 +910,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Delete an existing Itinerary
+      description: Delete an Itinerary
       parameters:
       - description: Itinerary ID
         in: path

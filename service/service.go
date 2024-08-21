@@ -7,8 +7,6 @@ import (
 	"api-gateway/generated/itineraries"
 	"api-gateway/generated/stories"
 	"api-gateway/generated/user"
-	"fmt"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -51,37 +49,27 @@ func (s *serviceManager) TravelDestinationService() destination.TravelDestinatio
 
 func NewServiceManager(conf *config.Config) (IServiceManager, error) {
 
-	connUser, err := grpc.NewClient(
-		fmt.Sprintf("localhost:%s", conf.USER_SERVICE_PORT),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	connUser, err := grpc.NewClient("localhost:5050", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
 
-	connStory, err := grpc.NewClient(
-		fmt.Sprintf("localhost:%s", conf.CONTENT_SERVICE_PORT),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	connStory, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
 
-	connItinerary, err := grpc.NewClient(
-		fmt.Sprintf("localhost:%s", conf.CONTENT_SERVICE_PORT),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	connItinerary, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
 
-	connDestination, err := grpc.NewClient(
-		fmt.Sprintf("localhost:%s", conf.CONTENT_SERVICE_PORT),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	connDestination, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
 
-	connCommunity, err := grpc.NewClient(
-		fmt.Sprintf("localhost:%s", conf.CONTENT_SERVICE_PORT),
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	connCommunity, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}

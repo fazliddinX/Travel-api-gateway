@@ -1,12 +1,11 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server for Auth Service.",
-        "title": "Auth Service API",
+        "description": "Api-geteway for user and story.",
+        "title": "Api Get Eway",
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
     "paths": {
         "/api/v1/destinations": {
             "get": {
@@ -365,7 +364,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete an existing Itinerary",
+                "description": "Delete an Itinerary",
                 "consumes": [
                     "application/json"
                 ],

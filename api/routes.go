@@ -3,7 +3,6 @@ package api
 import (
 	"api-gateway/api/handler"
 	"api-gateway/api/middleware"
-
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -14,7 +13,6 @@ import (
 // @title Api Get Eway
 // @version 1.0
 // @description Api-geteway for user and story.
-// @host localhost:8080
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
@@ -27,7 +25,7 @@ func NewRouter(handle *handler.Handler) *gin.Engine {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Use(middleware.AuthMiddleware())
-	router.Use(middleware.LoggerMiddleware())
+	//router.Use(middleware.LoggerMiddleware())
 
 	st := router.Group("/api/v1/stories")
 	st.POST("/", handle.CreateTravelStory)

@@ -4,7 +4,7 @@ import (
 	"api-gateway/generated/communication"
 	"api-gateway/generated/destination"
 	"api-gateway/models"
-	"github.com/spf13/cast"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -148,17 +148,11 @@ func (h *Handler) GetTrendDestinations(ctx *gin.Context) {
 // @Failure 500 {object} models.Errors
 // @Router /api/v1/messages [post]
 func (h *Handler) SendMessageUser(ctx *gin.Context) {
+	fmt.Println("Keldi")
+	fmt.Println("Keldi")
+	fmt.Println("Keldi")
+	fmt.Println("Keldi")
 	var req communication.SendMessageRequest
-	id, exists := ctx.Get("user_id")
-	if !exists {
-		h.Logger.Error("Error in get user id")
-		ctx.JSON(http.StatusBadRequest, models.Errors{
-			Message: "Error in get user id",
-		})
-		return
-	}
-
-	req.SendeId = cast.ToString(id)
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		h.Logger.Error("Error bind json", slog.String("error", err.Error()))
@@ -224,9 +218,10 @@ func (h *Handler) ListMessage(ctx *gin.Context) {
 	} else {
 		req.Limit = 10
 	}
-
+	fmt.Println("Keldi")
 	resp, err := h.CommunityClient.ListMessage(ctx, &req)
 	if err != nil {
+		fmt.Println("error", err)
 		h.Logger.Error("xatolik xabarlarni ro'yxatlashda", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
 			Message: "xatolik xabarlarni ro'yxatlashda",
@@ -248,6 +243,7 @@ func (h *Handler) ListMessage(ctx *gin.Context) {
 // @Failure 500 {object} models.Errors
 // @Router /api/v1/travel-tips [post]
 func (h *Handler) AddTravelTips(ctx *gin.Context) {
+	fmt.Println("hello")
 	var req communication.AddTravelTipsRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -260,6 +256,7 @@ func (h *Handler) AddTravelTips(ctx *gin.Context) {
 
 	resp, err := h.CommunityClient.AddTravelTips(ctx, &req)
 	if err != nil {
+		fmt.Println(err)
 		h.Logger.Error("xatolik sayohat tavsiyalarini qo'shishda", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
 			Message: "xatolik sayohat tavsiyalarini qo'shishda",
@@ -283,6 +280,9 @@ func (h *Handler) AddTravelTips(ctx *gin.Context) {
 // @Failure 500 {object} models.Errors
 // @Router /api/v1/travel-tips/ [get]
 func (h *Handler) GetTravelTips(ctx *gin.Context) {
+	fmt.Println("hello")
+	fmt.Println("hello")
+
 	var req communication.GetTravelTipsRequest
 	// Get 'page' query parameter and convert it to int32
 	pageStr := ctx.Query("page")
@@ -300,7 +300,6 @@ func (h *Handler) GetTravelTips(ctx *gin.Context) {
 		req.Page = 1
 	}
 
-	// Get 'limit' query parameter and convert it to int32
 	limitStr := ctx.Query("limit")
 	if limitStr != "" {
 		limit, err := strconv.Atoi(limitStr)
@@ -315,9 +314,14 @@ func (h *Handler) GetTravelTips(ctx *gin.Context) {
 	} else {
 		req.Limit = 10
 	}
+	fmt.Println("Keldi")
+	fmt.Println("Keldi")
+	fmt.Println("Keldi")
+	fmt.Println("Keldi")
 
 	resp, err := h.CommunityClient.GetTravelTips(ctx, &req)
 	if err != nil {
+		fmt.Println(err)
 		h.Logger.Error("xatolik sayohat tavsiyalarini olishda", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
 			Message: "xatolik sayohat tavsiyalarini olishda",

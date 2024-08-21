@@ -372,7 +372,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete an existing Itinerary",
+                "description": "Delete an Itinerary",
                 "consumes": [
                     "application/json"
                 ],
@@ -2642,11 +2642,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Auth Service API",
-	Description:      "This is a sample server for Auth Service.",
+	Title:            "Api Get Eway",
+	Description:      "Api-geteway for user and story.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

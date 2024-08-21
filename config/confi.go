@@ -13,6 +13,8 @@ type Config struct {
 	ACCESS_TOKEN         string
 	USER_SERVICE_PORT    string
 	CONTENT_SERVICE_PORT string
+	USER_HOST            string
+	CONTENT_HOST         string
 }
 
 func Load() Config {
@@ -23,9 +25,11 @@ func Load() Config {
 	config := Config{}
 
 	config.HTTP_PORT = cast.ToString(coalesce("HTTP_PORT", ":8080"))
-	config.CONTENT_SERVICE_PORT = cast.ToString(coalesce("CONTENT_SERVICE_PORT", ":50051"))
+	config.CONTENT_SERVICE_PORT = cast.ToString(coalesce("CONTENT_SERVICE_PORT", "50055"))
 	config.ACCESS_TOKEN = cast.ToString(coalesce("ACCESS_TOKEN", "abcde"))
-	config.USER_SERVICE_PORT = cast.ToString(coalesce("USER_SERVICE_PORT", ":50050"))
+	config.USER_SERVICE_PORT = cast.ToString(coalesce("USER_SERVICE_PORT", "50056"))
+	config.USER_HOST = cast.ToString(coalesce("USER_HOST", "localhost"))
+	config.CONTENT_HOST = cast.ToString(coalesce("CONTENT_HOST", "localhost"))
 	return config
 }
 

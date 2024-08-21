@@ -36,7 +36,7 @@ func (h *Handler) GetUserProfileHandle(ctx *gin.Context) {
 	if err != nil {
 		h.Logger.Error("Error in get user profile", "error", err.Error())
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
-			Message: "Error in get user profile",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -67,7 +67,7 @@ func (h *Handler) UpdateUserProfileHandle(ctx *gin.Context) {
 	if err := ctx.ShouldBindJSON(&profile); err != nil {
 		h.Logger.Error("error bind json", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusBadRequest, models.Errors{
-			Message: "Error in bind json",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -77,7 +77,7 @@ func (h *Handler) UpdateUserProfileHandle(ctx *gin.Context) {
 	if err != nil {
 		h.Logger.Error("Error in updated user", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
-			Message: "Error in updated user",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -106,7 +106,7 @@ func (h *Handler) ListUsersHandle(ctx *gin.Context) {
 		if err != nil {
 			h.Logger.Error("Error converting page to int", slog.String("error", err.Error()))
 			ctx.JSON(http.StatusBadRequest, models.Errors{
-				Message: "Error parsing page from string to int",
+				Message: err.Error(),
 			})
 			return
 		}
@@ -130,7 +130,7 @@ func (h *Handler) ListUsersHandle(ctx *gin.Context) {
 	if err != nil {
 		h.Logger.Error("Error in get list users", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
-			Message: "Error in get list users",
+			Message: err.Error(),
 		})
 		return
 	} else {
@@ -158,7 +158,7 @@ func (h *Handler) DeleteUser(ctx *gin.Context) {
 	if err != nil {
 		h.Logger.Error("Error deleting user", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
-			Message: "Error deleting user",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -182,7 +182,7 @@ func (h *Handler) GetUserActivity(ctx *gin.Context) {
 	if err != nil {
 		h.Logger.Error("Error getting user activity", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
-			Message: "Error getting user activity",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -242,7 +242,7 @@ func (h *Handler) FollowUser(ctx *gin.Context) {
 	if err != nil {
 		h.Logger.Error("Error following user", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
-			Message: "Error following user",
+			Message: err.Error(),
 		})
 		return
 	}
@@ -269,7 +269,7 @@ func (h *Handler) ListFollowers(ctx *gin.Context) {
 		if err != nil {
 			h.Logger.Error("Error converting page to int", slog.String("error", err.Error()))
 			ctx.JSON(http.StatusBadRequest, models.Errors{
-				Message: "Error parsing page from string to int",
+				Message: err.Error(),
 			})
 			return
 		}
@@ -283,7 +283,7 @@ func (h *Handler) ListFollowers(ctx *gin.Context) {
 		if err != nil {
 			h.Logger.Error("Error converting limit to int", slog.String("error", err.Error()))
 			ctx.JSON(http.StatusBadRequest, models.Errors{
-				Message: "Error parsing limit from string to int",
+				Message: err.Error(),
 			})
 			return
 		}
@@ -297,7 +297,7 @@ func (h *Handler) ListFollowers(ctx *gin.Context) {
 	if err != nil {
 		h.Logger.Error("Error listing followers", slog.String("error", err.Error()))
 		ctx.JSON(http.StatusInternalServerError, models.Errors{
-			Message: "Error listing followers",
+			Message: err.Error(),
 		})
 		return
 	}

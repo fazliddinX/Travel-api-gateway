@@ -3,6 +3,7 @@ package handler
 import (
 	"api-gateway/generated/stories"
 	"api-gateway/models"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -22,6 +23,7 @@ import (
 // @Failure 500 {object} models.Errors
 // @Router /api/v1/stories [post]
 func (h *Handler) CreateTravelStory(ctx *gin.Context) {
+	fmt.Println("Keldi1")
 	var req stories.CreateTravelStoryRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		h.Logger.Error("Error bind json", "error", err.Error())
@@ -30,6 +32,7 @@ func (h *Handler) CreateTravelStory(ctx *gin.Context) {
 		})
 		return
 	}
+	fmt.Println("Keldi 2")
 	resp, err := h.StoriesClient.CreateTravelStory(ctx, &req)
 	if err != nil {
 		h.Logger.Error("xatolik sayohat hikoyasini yaratishda", "error", err.Error())
@@ -113,6 +116,9 @@ func (h *Handler) DeleteTravelStory(ctx *gin.Context) {
 // @Failure 500 {object} models.Errors
 // @Router /api/v1/stories [get]
 func (h *Handler) ListTravelStory(ctx *gin.Context) {
+	fmt.Println("keldi")
+	fmt.Println("keldi")
+	fmt.Println("keldi")
 	var req stories.ListTravelStoryRequest
 	// Get 'page' query parameter and convert it to int32
 	pageStr := ctx.Query("page")
